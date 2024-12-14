@@ -39,20 +39,30 @@ async function fetchRandomWord() {
     return data;
   } catch (error) {
     console.error("Error fetching word:", error);
-    return "error";
+    return [];
   }
+}
+
+function getWordCount() {
+  const wordCount = document.getElementById("amount").value;
+  return parseInt(wordCount, 10);
 }
 
 async function startInfiniteWordCloud() {
   const container = document.getElementById("wordcloud");
 
-  setInterval(async () => {
+  const intervalId = setInterval(async () => {
+    if (words.length >= getWordCount()) {
+      clearInterval(intervalId);
+      return;
+    }
+
     const allWords = await fetchRandomWord();
+
     const chosenIndex = Math.floor(Math.random() * allWords.length);
-    console.log(chosenIndex);
-    let newWord = allWords[chosenIndex].word;
+    const newWord = allWords[chosenIndex]?.word;
+
     words.push(newWord);
-    console.log(words);
 
     container.innerHTML = "";
 
@@ -65,5 +75,10 @@ async function startInfiniteWordCloud() {
     container.appendChild(wordCloud);
   }, 1000);
 }
+
+document.getElementById("amount").addEventListener("input", () => {
+  words = [];
+  startInfiniteWordCloud();
+});
 
 startInfiniteWordCloud();
