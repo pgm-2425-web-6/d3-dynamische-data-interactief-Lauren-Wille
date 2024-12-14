@@ -1,22 +1,27 @@
 async function fetchDefinition(word) {
-    try {
-      const response = await fetch(
-        `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
-      );
-      const info = await response.json();
+  try {
+    const response = await fetch(
+      `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
+    );
+    const info = await response.json();
 
-      if (info[0] && info[0].meanings && info[0].meanings[0] && info[0].meanings[0].definitions && info[0].meanings[0].definitions[0]) {
-        const definition = info[0].meanings[0].definitions[0].definition;
-        return definition ? definition : "No definition available"; 
-      } else {
-        return "No definition available"; 
-      }
-      
-    } catch (error) {
-      console.error("Error fetching word:", error);
-      return [];
+    if (
+      info[0] &&
+      info[0].meanings &&
+      info[0].meanings[0] &&
+      info[0].meanings[0].definitions &&
+      info[0].meanings[0].definitions[0]
+    ) {
+      const definition = info[0].meanings[0].definitions[0].definition;
+      return definition ? definition : "No definition available";
+    } else {
+      return "No definition available";
     }
+  } catch (error) {
+    console.error("Error fetching word:", error);
+    return [];
   }
+}
 
 function WordCloud(
   text,
@@ -87,21 +92,20 @@ function WordCloud(
           .attr("transform", `translate(${x},${y}) rotate(${rotate})`)
           .text(text);
 
-
         wordElement
           .on("mouseover", async function (event) {
             const definition = await fetchDefinition(text);
-            tooltip.style("visibility", "visible").text(definition); 
-            d3.select(this).attr("fill", "orange"); 
+            tooltip.style("visibility", "visible").text(definition);
+            d3.select(this).attr("fill", "orange");
           })
           .on("mouseout", function () {
-            tooltip.style("visibility", "hidden"); 
-            d3.select(this).attr("fill", fill); 
+            tooltip.style("visibility", "hidden");
+            d3.select(this).attr("fill", fill);
           })
           .on("mousemove", function (event) {
             tooltip
               .style("top", `${event.pageY + 10}px`)
-              .style("left", `${event.pageX + 10}px`); 
+              .style("left", `${event.pageX + 10}px`);
           });
       });
     });
