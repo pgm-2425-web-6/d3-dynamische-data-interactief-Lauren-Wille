@@ -10,7 +10,7 @@ body {
     max-width: 90%;
   }
   
-  #wordcloud {
+  .wordcloud {
     border: 1px solid #ccc;
     padding: 10px;
     background-color: #fff;

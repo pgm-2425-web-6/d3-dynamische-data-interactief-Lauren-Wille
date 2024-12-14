@@ -36,7 +36,7 @@ function WordCloud(
     height = 400,
     maxWords = 250,
     fontFamily = "sans-serif",
-    fontScale = 15,
+    fontScale = 25,
     fill = "black",
     padding = 0,
     rotate = () => (Math.random() < 0.5 ? 0 : 90),
